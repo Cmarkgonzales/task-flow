@@ -1,4 +1,3 @@
-// src/types.ts
 export interface Task {
   dueDate: string | number | Date;
   id?: number;
@@ -13,3 +12,5 @@ export interface TaskParams {
   sort?: string;
   status?: string;
 }
+
+export type ThemeName = 'indigo' | 'purple' | 'teal' | 'rose';
