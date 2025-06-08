@@ -1,9 +1,5 @@
 import React from "react";
-
-interface Theme {
-    light: string;
-    text: string;
-}
+import type { Theme } from '../types/index';
 
 interface DashboardStatsProps {
     currentTheme: Theme;

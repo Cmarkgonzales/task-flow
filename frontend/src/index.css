@@ -29,4 +29,8 @@
     body {
         font-family: 'Poppins', sans-serif;
     }
+
+    button, select, option {
+        @apply cursor-pointer;
+    }
 }

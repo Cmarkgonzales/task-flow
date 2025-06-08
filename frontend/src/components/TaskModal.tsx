@@ -1,5 +1,5 @@
 import React from "react";
-import type { Task } from '../types/index';
+import type { Task, FormErrors } from '../types/index';
 
 type TaskModalProps = {
     task?: Task;
@@ -28,14 +28,10 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
         title: task?.title || '',
         description: task?.description || '',
         priority: task?.priority || 1,
-        dueDate: task?.dueDate || new Date().toISOString().split('T')[0],
+        dueDate: task?.dueDate || new Date().toISOString().split('T')[0], // Default to today
         completed: task?.completed || false
     });
-    
-    type FormErrors = {
-        title?: string;
-        dueDate?: string;
-    };
+
     const [errors, setErrors] = React.useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -54,21 +50,35 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
         return Object.keys(errors).length === 0;
     };
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const target = e.target as HTMLInputElement;
-        const { name, value, type, checked } = target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-        
-        // Clear error when field is edited
-        if (errors[name as keyof typeof errors]) { /* empty */ }
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const { name, value, type } = e.target;
+            const checked = (e.target instanceof HTMLInputElement) ? e.target.checked : undefined;
+
+            setFormData(prev => ({
+                ...prev,
+                [name]:
+                    type === 'checkbox'
+                        ? checked
+                        : name === 'priority'
+                        ? Number(value)
+                        : value,
+            }));
+
+            // Clear the field-specific error (if any)
+            if (errors[name as keyof typeof errors]) {
+                setErrors(prev => ({ ...prev, [name]: undefined }));
+            }
     };
+
+    function getPriorityDisplay(priority: number): 'Low' | 'Medium' | 'High' {
+        switch (priority) {
+            case 1: return 'Low';
+            case 2: return 'Medium';
+            case 3: return 'High';
+            default: return 'Low'; // fallback
+        }
+    }
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -80,7 +90,8 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
                     ...formData,
                     id: task?.id,
                     priority: formData.priority,
-                    priorityDisplay: 'Low'
+                    priorityDisplay: getPriorityDisplay(formData.priority),
+                    dueDate: new Date(`${formData.dueDate}T00:00:00+00:00`),
                 });
                 setIsSubmitting(false);
             }, 400);
@@ -115,7 +126,7 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
     }, [onClose]);
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className={`fixed inset-0 bg-$[them.light} bg-opacity-50 flex items-center justify-center p-4 z-50`}>
             <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto animate-fade-in">
                 <div className="px-6 py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
@@ -166,8 +177,8 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
                                     Priority
                                 </label>
                                 <div className="mt-1 flex space-x-3">
-                                    {(Object.entries(priorityLabels) as unknown as [keyof typeof priorityLabels, string][]).map(
-                                        ([priorityValue, priorityLabel]: [keyof typeof priorityLabels, string]) => (
+                                    {Object.entries(priorityLabels).map(
+                                        ([priorityValue, priorityLabel]) => (
                                             <label key={priorityValue} className="flex items-center">
                                                 <input
                                                     type="radio"

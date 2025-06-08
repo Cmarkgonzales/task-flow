@@ -1,11 +1,5 @@
 import React from "react";
-
-interface Theme {
-    text: string;
-    ring: string;
-    primary: string;
-    hover: string;
-}
+import type { Theme } from '../types/index';
 
 interface HeaderProps {
     currentTheme: Theme;
