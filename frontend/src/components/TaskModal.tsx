@@ -1,20 +1,12 @@
 import React from "react";
-import type { Task, FormErrors } from '../types/index';
+import type { Theme, Task, FormErrors } from '../types/index';
 
 type TaskModalProps = {
     task?: Task;
     onClose: () => void;
     onSave: (task: Task) => void;
     title: string;
-    theme: {
-        primary: string;
-        hover: string;
-        light: string;
-        text: string;
-        border: string;
-        gradient: string;
-        ring: string;
-    };
+    theme: Theme;
 };
 
 function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
@@ -91,7 +83,11 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
                     id: task?.id,
                     priority: formData.priority,
                     priorityDisplay: getPriorityDisplay(formData.priority),
-                    dueDate: new Date(`${formData.dueDate}T00:00:00+00:00`),
+                    dueDate: (() => {
+                        const date = new Date(formData.dueDate);
+                        date.setHours(23, 59, 59, 999); // Local end of day
+                        return date;
+                    })(),
                 });
                 setIsSubmitting(false);
             }, 400);
@@ -126,7 +122,7 @@ function TaskModal({ task, onClose, onSave, title, theme }: TaskModalProps) {
     }, [onClose]);
 
     return (
-        <div className={`fixed inset-0 bg-$[them.light} bg-opacity-50 flex items-center justify-center p-4 z-50`}>
+        <div className={`fixed inset-0 ${theme.light} flex items-center justify-center p-4 z-50`}>
             <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto animate-fade-in">
                 <div className="px-6 py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">

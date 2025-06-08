@@ -11,6 +11,7 @@ export interface Task {
 export interface TaskParams {
   sort?: string;
   status?: string;
+  search?: string;
 }
 
 export type Theme = {

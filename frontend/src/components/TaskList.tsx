@@ -1,6 +1,5 @@
-import React from "react";
+import React from 'react';
 import type { Task } from '../types/index';
-
 
 interface TaskListProps {
     loading: boolean;
@@ -30,7 +29,7 @@ const TaskList: React.FC<TaskListProps> = ({
     handleToggleComplete
 }) => (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        {loading && tasks.length === 0 ? (
+        {loading ? (
             <div className="p-8 flex justify-center">
                 <div className={`animate-spin rounded-full h-10 w-10 border-b-2 ${currentTheme.border}`}></div>
             </div>
@@ -41,7 +40,7 @@ const TaskList: React.FC<TaskListProps> = ({
                 </svg>
                 <h3 className="mt-2 text-lg font-medium text-gray-900">No tasks found</h3>
                 <p className="mt-1 text-gray-500">
-                    {searchTerm ? 'Try adjusting your search term.' : 'Get started by adding a new task.'}
+                    {searchTerm ? `No tasks found matching '${searchTerm}'.` : 'Get started by adding a new task.'}
                 </p>
                 <div className="mt-6">
                     <button
@@ -58,16 +57,19 @@ const TaskList: React.FC<TaskListProps> = ({
         ) : (
             <ul className="divide-y divide-gray-200">
                 {tasks.map((task, index) => {
-                    const isOverdue = !task.completed && new Date(task.dueDate) < new Date();
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+                    const now = new Date();
                     const dueDate = new Date(task.dueDate);
-                    dueDate.setHours(0, 0, 0, 0);
-                    const daysRemaining = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+                    // Determine if the task is overdue (exact comparison with time)
+                    const isOverdue = !task.completed && dueDate.getTime() < now.getTime();
+
+                    // Calculate days remaining (based on exact time diff, not rounded up)
+                    const timeDiff = dueDate.getTime() - now.getTime();
+                    const daysRemaining = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
                     return (
                         <li 
                             key={task.id} 
-                            className={`p-4 hover:bg-gray-50 transition-colors duration-200 ${task.completed ? 'bg-gray-50' : ''} animate-slide-in`} 
+                            className={`p-4 transition duration-200 ease-in-out transform hover:scale-[1.01] hover:shadow-md hover:bg-gray-50 ${task.completed ? 'bg-gray-50' : ''} animate-slide-in`} 
                             style={{animationDelay: `${index * 0.05}s`}}
                         >
                             <div className="flex items-start justify-between">
@@ -129,10 +131,15 @@ const TaskList: React.FC<TaskListProps> = ({
                                             
                                             {!task.completed && (
                                                 <span className="ml-2">
-                                                    {daysRemaining === 0 ? 'Today' : 
-                                                     daysRemaining === 1 ? 'Tomorrow' :
-                                                     daysRemaining > 0 ? `${daysRemaining} days left` :
-                                                     `${Math.abs(daysRemaining)} days overdue`}
+                                                    {daysRemaining === 0
+                                                        ? 'Today'
+                                                        : daysRemaining === 1
+                                                        ? 'Tomorrow'
+                                                        : daysRemaining > 1
+                                                        ? `${daysRemaining} days left`
+                                                        : daysRemaining === -1
+                                                        ? 'Yesterday'
+                                                        : `${Math.abs(daysRemaining)} days overdue`}
                                                 </span>
                                             )}
                                         </div>
@@ -140,7 +147,12 @@ const TaskList: React.FC<TaskListProps> = ({
                                 </div>
                                 <div className="ml-4 flex-shrink-0 flex space-x-2">
                                     <button
-                                        onClick={() => setEditingTask(task)}
+                                        onClick={() =>
+                                            setEditingTask({
+                                                ...task,
+                                                dueDate: new Date(task.dueDate).toISOString().split('T')[0], // ensures yyyy-MM-dd format
+                                            })
+                                        }
                                         className={`bg-white text-gray-500 hover:${currentTheme.text} p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200`}
                                         title="Edit task"
                                     >
