@@ -12,6 +12,7 @@ import com.task_flow.tracker.exception.ResourceNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "*") // Allow all origins for simplicity; adjust as needed
@@ -21,20 +22,30 @@ public class TaskController {
     private TaskRepository taskRepository;
 
     @GetMapping
-    public List<Task> getAllTasks(@RequestParam(required = false) String sort,
-                                @RequestParam(required = false) String status) {
-        Sort sorting = parseSortParam(sort); // Your custom sort parser
-        List<Task> tasks;
+    public List<Task> getAllTasks(
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String search
+        ) {
+        Sort sorting = parseSortParam(sort);
 
-        if ("completed".equalsIgnoreCase(status)) {
-            tasks = taskRepository.findByCompleted(true, sorting);
-        } else if ("active".equalsIgnoreCase(status)) {
-            tasks = taskRepository.findByCompleted(false, sorting);
-        } else {
-            tasks = taskRepository.findAll(sorting);
+        if (search != null) {
+            if("completed".equalsIgnoreCase(status)) {
+                return taskRepository.findByTitleContainingIgnoreCaseAndCompleted(search, true, sorting);
+            } else if ("active".equalsIgnoreCase(status)) {
+                return taskRepository.findByTitleContainingIgnoreCaseAndCompleted(search, false, sorting);
+            } else {
+                return taskRepository.findByTitleContainingIgnoreCase(search, sorting);
+            }
         }
 
-        return tasks;
+        if ("completed".equalsIgnoreCase(status)) {
+            return taskRepository.findByCompleted(true, sorting);
+        } else if ("active".equalsIgnoreCase(status)) {
+            return taskRepository.findByCompleted(false, sorting);
+        } else {
+            return taskRepository.findAll(sorting);
+        }
     }
 
     private Sort parseSortParam(String sortParam) {

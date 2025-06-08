@@ -9,8 +9,8 @@ import java.util.List;
 
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-
+    List<Task> findByTitleContainingIgnoreCase(String title, Sort sort);
+    List<Task> findByTitleContainingIgnoreCaseAndCompleted(String title, boolean completed, Sort sort);
     List<Task> findByCompleted(boolean completed, Sort sort);
-    // Custom query methods can be defined here if needed
-    // For example, to find tasks by completion status or priority:
+    List<Task> findAll(Sort sort);
 }
