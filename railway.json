@@ -1,9 +1,11 @@
 {
   "build": {
-    "command": "cd backend && ./mvnw package -DskipTests"
+    "command": "./mvnw package -DskipTests",
+    "cwd": "backend"
   },
   "start": {
-    "command": "cd backend && java -jar target/*.jar"
+    "command": "java -jar target/*.jar",
+    "cwd": "backend"
   },
   "deploy": {
     "restart": true
