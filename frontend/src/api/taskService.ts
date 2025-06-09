@@ -1,8 +1,7 @@
-// src/api/taskService.ts
 import axios from 'axios';
 import type { Task, TaskParams } from '../types';
 
-const API = 'http://localhost:8085/api/tasks';
+const API = `${import.meta.env.VITE_API_URL}/tasks`;
 
 export const fetchAllTasks = (params?: TaskParams) =>
   axios.get<Task[]>(API, { params });
