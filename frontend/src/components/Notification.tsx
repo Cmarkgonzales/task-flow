@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface NotificationProps {
     notification: string | null;
@@ -14,9 +14,7 @@ const Notification: React.FC<NotificationProps> = ({ notification, setNotificati
                     onClick={() => setNotification(null)}
                     className="ml-2 text-gray-400 hover:text-gray-600"
                 >
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <i className="fas fa-times"></i>
                 </button>
             </div>
         )}

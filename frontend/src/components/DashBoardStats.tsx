@@ -1,5 +1,5 @@
-import React from "react";
-import type { Theme } from '../types/index';
+import React from 'react';
+import type { Theme } from '../types';
 
 interface DashboardStatsProps {
     currentTheme: Theme;

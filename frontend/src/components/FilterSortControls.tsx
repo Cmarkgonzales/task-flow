@@ -1,5 +1,5 @@
-import React from "react";
-import type { ThemeName, Task } from '../types/index';
+import React from 'react';
+import type { ThemeName, Task } from '../types';
 
 
 interface FilterSortControlsProps {
@@ -74,9 +74,7 @@ const FilterSortControls: React.FC<FilterSortControlsProps> = ({
                     <option value="title-desc">Title (Z-A)</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <i className="fas fa-caret-down"></i>
                 </div>
             </div>
         </div>

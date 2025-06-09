@@ -1,5 +1,5 @@
-import React from "react";
-import type { ThemeName, ThemeMap, Theme } from '../types/index';
+import React from 'react';
+import type { ThemeName, ThemeMap, Theme } from '../types';
 
 interface ThemeSelectorProps {
     themeColors: ThemeMap

@@ -1,8 +1,8 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { fetchAllTasks, addTask, updateTask, deleteTask } from './api/taskService';
-import type { Task, TaskParams, ThemeName } from './types/index';
-import { themeColors } from './constants/index';
+import type { Task, TaskParams, ThemeName } from './types';
+import { themeColors } from './constants';
 
 import Header from './components/Header';
 import TaskModal from './components/TaskModal';
@@ -40,12 +40,12 @@ function App() {
             if (sort) queryParams.sort = sort;
             if (status !== 'all') queryParams.status = status;
             if (search) queryParams.search = search;
-            console.log("Fetching tasks with params:", queryParams);
+
             const response = await fetchAllTasks(queryParams);
             setTasks(response.data);
             setError(null);
         } catch (err) {
-            setError("Failed to fetch tasks. Please try again.");
+            setError('Failed to fetch tasks. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -94,10 +94,11 @@ function App() {
             const response = await addTask(task);
             const newTask = response.data;
             setTasks(prev => [...prev, newTask]);
+            setFilter('all'); // Reset filter to show new task
             setShowAddModal(false);
-            showNotification("✅ Task added successfully!");
+            showNotification('✅ Task added successfully!');
         } catch (err) {
-            setError("Failed to add task. Please try again.");
+            setError('Failed to add task. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -106,7 +107,7 @@ function App() {
 
     const handleUpdateTask = async (task: Task) => {
         if (typeof task.id !== 'number') {
-            setError("Task ID is missing. Cannot update task.");
+            setError('Task ID is missing. Cannot update task.');
             return;
         }
         try {
@@ -115,9 +116,9 @@ function App() {
             const updatedTask = response.data;
             setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
             setEditingTask(null);
-            showNotification("✅ Task updated successfully!");
+            showNotification('✅ Task updated successfully!');
         } catch (err) {
-            setError("Failed to update task. Please try again.");
+            setError('Failed to update task. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -130,9 +131,9 @@ function App() {
             await deleteTask(id);
             setTasks(prev => prev.filter(task => task.id !== id));
             setShowConfirmDelete(null);
-            showNotification("🗑️ Task deleted successfully!");
+            showNotification('🗑️ Task deleted successfully!');
         } catch (err) {
-            setError("Failed to delete task. Please try again.");
+            setError('Failed to delete task. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -142,7 +143,7 @@ function App() {
     const handleToggleComplete = async (task: Task) => {
         const updatedTask = { ...task, completed: !task.completed };
         await handleUpdateTask(updatedTask);
-        showNotification(updatedTask.completed ? "✅ Task marked as complete!" : "⏪ Task marked as incomplete");
+        showNotification(updatedTask.completed ? '✅ Task marked as complete!' : '⏪ Task marked as incomplete');
     };
 
     const showNotification = (message: string) => {
@@ -238,6 +239,7 @@ function App() {
                     setShowConfirmDelete={setShowConfirmDelete}
                     handleDeleteTask={handleDeleteTask}
                     showConfirmDelete={showConfirmDelete}
+                    currentTheme={currentTheme}
                 />
             )}
 
