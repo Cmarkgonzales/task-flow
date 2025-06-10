@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "title": "Finish UI layout for dashboard",
+    "description": "Design and layout the main dashboard components.",
+    "completed": false,
+    "priority": 2,
+    "priorityDisplay": "Medium",
+    "createdAt": "2025-06-10T13:16:49.314212+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-12T15:59:59.999Z"
+  },
+  {
+    "id": 2,
+    "title": "Fix authentication bug on login",
+    "description": "Resolve token mismatch error during user login.",
+    "completed": true,
+    "priority": 1,
+    "priorityDisplay": "High",
+    "createdAt": "2025-06-09T09:30:00+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-09T15:59:59.999Z"
+  },
+  {
+    "id": 3,
+    "title": "Write unit tests for task API",
+    "description": "Ensure coverage for create, update, and delete task endpoints.",
+    "completed": false,
+    "priority": 3,
+    "priorityDisplay": "Low",
+    "createdAt": "2025-06-08T14:00:00+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-15T15:59:59.999Z"
+  },
+  {
+    "id": 4,
+    "title": "Update README with setup instructions",
+    "description": "Add clear steps for running the project locally.",
+    "completed": false,
+    "priority": 2,
+    "priorityDisplay": "Medium",
+    "createdAt": "2025-06-10T10:15:00+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-11T15:59:59.999Z"
+  },
+  {
+    "id": 5,
+    "title": "Refactor old components to TypeScript",
+    "description": "Convert all legacy JS components to use TypeScript.",
+    "completed": true,
+    "priority": 2,
+    "priorityDisplay": "Medium",
+    "createdAt": "2025-06-07T08:20:00+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-10T15:59:59.999Z"
+  },
+  {
+    "id": 6,
+    "title": "Test fallback API with mock data",
+    "description": "Ensure fallback works when API is unreachable.",
+    "completed": false,
+    "priority": 1,
+    "priorityDisplay": "High",
+    "createdAt": "2025-06-10T13:16:49.314212+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-13T15:59:59.999Z"
+  },
+  {
+    "id": 7,
+    "title": "Schedule team meeting for sprint planning",
+    "description": "Coordinate availability and book a room for the sprint meeting.",
+    "completed": false,
+    "priority": 3,
+    "priorityDisplay": "Low",
+    "createdAt": "2025-06-10T13:16:49.314212+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-14T15:59:59.999Z"
+  },
+  {
+    "id": 8,
+    "title": "Deploy frontend to staging environment",
+    "description": "Push the latest build to the staging server and verify deployment.",
+    "completed": true,
+    "priority": 1,
+    "priorityDisplay": "High",
+    "createdAt": "2025-06-06T11:45:00+08:00",
+    "updatedAt": "",
+    "dueDate": "2025-06-08T15:59:59.999Z"
+  }
+]
