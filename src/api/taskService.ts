@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { Task, TaskParams } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL;
-const API = API_URL ? `${API_URL}/tasks` : null;
+const API = API_URL ? `${API_URL}/api/tasks` : null;
 const useMock = !API_URL;
 
 // --- API METHODS ---
