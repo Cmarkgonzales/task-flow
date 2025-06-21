@@ -34,7 +34,6 @@ function App() {
     const fetchTasks = useCallback(async (sort: string = '', status: string = 'all', search: string = '') => {
         try {
             setLoading(true);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // debounce
 
             const queryParams: TaskParams = {};
             if (sort) queryParams.sort = sort;
